@@ -41,9 +41,6 @@ public class AICommentService : IAICommentService
 
         try
         {
-            _httpClient.DefaultRequestHeaders.Clear();
-            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_openAIKey}");
-
             var requestBody = new
             {
                 model = "gpt-3.5-turbo",
@@ -55,7 +52,13 @@ public class AICommentService : IAICommentService
                 max_tokens = 150
             };
 
-            var response = await _httpClient.PostAsJsonAsync("https://api.openai.com/v1/chat/completions", requestBody);
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://api.openai.com/v1/chat/completions")
+            {
+                Content = JsonContent.Create(requestBody)
+            };
+            request.Headers.Add("Authorization", $"Bearer {_openAIKey}");
+            
+            var response = await _httpClient.SendAsync(request);
             
             if (response.IsSuccessStatusCode)
             {
@@ -67,9 +70,10 @@ public class AICommentService : IAICommentService
                     .GetString() ?? "No commentary generated";
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // Log error
+            // TODO: Implement proper logging
+            Console.WriteLine($"Error generating OpenAI comment: {ex.Message}");
         }
 
         return $"AI Commentary: {content} - This is a simulated response as the API call failed.";
@@ -113,9 +117,10 @@ public class AICommentService : IAICommentService
                     .GetString() ?? "No commentary generated";
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // Log error
+            // TODO: Implement proper logging
+            Console.WriteLine($"Error generating Gemini comment: {ex.Message}");
         }
 
         return $"AI Commentary (Gemini): {content} - This is a simulated response as the API call failed.";

@@ -40,10 +40,11 @@ public class NewsScraperService : INewsScraperService
                 
                 if (titleNode != null && linkNode != null)
                 {
+                    var contentNode = node.SelectSingleNode(".//p");
                     var news = new News
                     {
                         Title = titleNode.InnerText.Trim(),
-                        Content = titleNode.InnerText.Trim(),
+                        Content = contentNode?.InnerText.Trim() ?? titleNode.InnerText.Trim(),
                         SourceUrl = linkNode.GetAttributeValue("href", ""),
                         ImageUrl = imgNode?.GetAttributeValue("src", "") ?? "",
                         Language = language
@@ -52,9 +53,10 @@ public class NewsScraperService : INewsScraperService
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // Log error - for now, return empty list
+            // TODO: Implement proper logging
+            Console.WriteLine($"Error scraping news: {ex.Message}");
         }
         
         return newsList;

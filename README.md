@@ -71,7 +71,7 @@ cd src/SportNewsAndScores.Api
 dotnet run
 ```
 
-The API will be available at `http://localhost:5000`
+The API will be available at `http://localhost:5245`
 
 3. **Setup Frontend**
 ```bash
