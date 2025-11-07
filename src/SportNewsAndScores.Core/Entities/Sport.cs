@@ -12,6 +12,7 @@ public class Sport : BaseEntity
     [MaxLength(100)]
     public string NameTr { get; set; } = string.Empty;
     
+    [Required]
     [MaxLength(10)]
     public string Icon { get; set; } = string.Empty;
     

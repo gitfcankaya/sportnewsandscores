@@ -11,9 +11,11 @@ public class News : BaseEntity
     [Required]
     public string Content { get; set; } = string.Empty;
     
+    [Required]
     [MaxLength(1000)]
     public string SourceUrl { get; set; } = string.Empty;
     
+    [Required]
     [MaxLength(1000)]
     public string ImageUrl { get; set; } = string.Empty;
     
