@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SportNewsAndScores.Api.Middleware;
 using SportNewsAndScores.Core.Interfaces;
 using SportNewsAndScores.Infrastructure.Data;
 using SportNewsAndScores.Infrastructure.Services;
@@ -7,7 +8,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Sport News and Scores API",
+        Version = "v1",
+        Description = "A comprehensive API for sports news, live scores, matches, and AI-powered commentary",
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        {
+            Name = "Sport News & Scores",
+            Url = new Uri("https://github.com/gitfcankaya/sportnewsandscores")
+        }
+    });
+});
 
 // Configure DbContext with SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -34,18 +49,40 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Initialize database with seed data
+// Initialize database with migrations and seed data
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    DbInitializer.Initialize(context);
+    try
+    {
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        
+        // Apply migrations
+        context.Database.Migrate();
+        
+        // Seed data
+        DbInitializer.Initialize(context);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating or seeding the database.");
+        throw;
+    }
 }
 
 // Configure the HTTP request pipeline.
+app.UseGlobalExceptionHandler();
+
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sport News and Scores API v1");
+        c.RoutePrefix = "swagger";
+        c.DocumentTitle = "Sport News & Scores API Documentation";
+    });
 }
 
 app.UseHttpsRedirection();

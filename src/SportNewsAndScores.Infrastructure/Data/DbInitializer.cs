@@ -6,11 +6,11 @@ public static class DbInitializer
 {
     public static void Initialize(ApplicationDbContext context)
     {
-        context.Database.EnsureCreated();
-
+        // Database is created via migrations in Program.cs
+        
         if (context.Sports.Any())
         {
-            return;
+            return; // DB has been seeded
         }
 
         var sports = new Sport[]

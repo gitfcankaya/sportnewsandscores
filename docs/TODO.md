@@ -54,15 +54,15 @@
 ## Version 1.1.0 - Next Sprint 🚀
 
 ### Backend Enhancements
-- [ ] Create and run Entity Framework migrations
-- [ ] Test database initialization
-- [ ] Add data validation attributes to entities
+- [x] Create and run Entity Framework migrations
+- [x] Test database initialization
+- [x] Add data validation attributes to entities
 - [ ] Implement pagination for news and matches endpoints
 - [ ] Add sorting options for API endpoints
 - [ ] Create DTO models for API responses
 - [ ] Implement AutoMapper for entity-DTO mapping
 - [ ] Add logging with Serilog
-- [ ] Implement exception handling middleware
+- [x] Implement exception handling middleware
 - [ ] Add health check endpoint
 - [ ] Create background service for periodic news scraping
 - [ ] Enhance web scraping to support multiple sources
@@ -93,7 +93,7 @@
 - [ ] Achieve 70%+ code coverage
 
 ### Documentation
-- [ ] Add API documentation with Swagger/OpenAPI
+- [x] Add API documentation with Swagger/OpenAPI
 - [ ] Create user guide
 - [ ] Create deployment guide
 - [ ] Add inline code documentation

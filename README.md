@@ -143,6 +143,9 @@ sportnewsandscores/
 
 ## 🎯 API Endpoints
 
+The API is documented using Swagger/OpenAPI. When running the API in development mode, access the interactive documentation at:
+- **Swagger UI**: `http://localhost:5245/swagger`
+
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/sports` | Get all sports categories |
